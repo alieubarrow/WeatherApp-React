@@ -8,7 +8,6 @@ export default function App() {
   const [city, setCity] = useState(" ");
   const [weather, setWeather] = useState({});
   //const [error, setError] = useState(" ");
-  const [loading, setLoading] = useState(false)
 
   /*useEffect(() => {
     async function fetchData() {
@@ -26,19 +25,27 @@ export default function App() {
 
     //getWeather();
 
-    const DATA = "https://api.openweathermap.org/data/2.5/weather?q=Dubai&APPID=9bd527bc70707a6643cad5b24730fb0d"; 
+    //"https://api.openweathermap.org/data/2.5/weather?q=London&units=imperial&APPID=9bd527bc70707a6643cad5b24730fb0d"; 
     
     const fetchWeather = (e) => {
+     const DATA = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=9bd527bc70707a6643cad5b24730fb0d`;
      e.preventDefault()
-     setLoading(true)
      axios.get(DATA).then((response) => {
       setWeather(response.data)
       console.log(response.data)
      })
      setCity("");
-     setLoading(false)
   }
 
+  const fetchMostSearched = (city, e) => {
+    const url= `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=9bd527bc70707a6643cad5b24730fb0d`;
+    e.preventDefault()
+    axios.get(url).then((response) => {
+     setWeather(response.data)
+     console.log(response.data)
+    })
+    setCity("");
+ }
   /*const getWeather = async () => {
     if (city === " ") {
       alert("Please enter a city name");
@@ -83,11 +90,34 @@ export default function App() {
 return (
     <>
     <div className="container"> 
-      <div className ="info">
-        <img src="./images/background.jpg" alt="404"></img>
-      </div>
-      <div>
-       {/*<p>{weather.name}</p>*/}
+      <div className="info">
+        <div className="weatherInfo">
+          <div className="location">
+            <div className="cityName">
+              <p>{weather.name}</p>
+            </div>
+            <div className="country">
+              {weather.sys ? <p>{weather.sys.country}</p> : null}
+            </div>
+          </div>
+          <div className="degrees">
+            {weather.main ? <h1>{weather.main.temp.toFixed()}°F</h1> : null}
+          </div>
+          <div className="description">
+            {weather.weather ? <p>{weather.weather[0].main}</p> : null}
+          </div>
+          <div className="bottomInfo">
+            <div className="feels">
+              {weather.main ? <p>{weather.main.feels_like.toFixed()}°F</p> : null}
+            </div>
+            <div className="humidity">
+              {weather.main ? <p>{weather.main.humidity}%</p> : null}
+            </div>
+            <div className="wind">
+              {weather.wind ? <p>{weather.wind.speed.toFixed()} MPH</p> : null}
+            </div>
+          </div>
+        </div>
       </div>
       <div className="searchBar">
         <form action="/search" method="GET">  
@@ -99,14 +129,14 @@ return (
           <hr></hr>
         </div>
         <div className="topSearches">
-          <p className="cities">Cyprus</p>
-          <p className="cities">Madrid</p>
-          <p className="cities">Athens</p>
-          <p className="cities">Bahamas</p>
-          <p className="cities">Cancun</p>
-          <p className="cities">London</p>
-          <p className="cities">Paris</p>
-          <p className="cities">Miami</p>
+          <p className="cities" onClick={(e) => fetchMostSearched("San Francisco", e)}>San Francisco</p> 
+          <p className="cities" onClick={(e) => fetchMostSearched("Madrid", e)}>Madrid</p>
+          <p className="cities" onClick={(e) => fetchMostSearched("Athens", e)}>Athens</p>
+          <p className="cities" onClick={(e) => fetchMostSearched("Los Angeles", e)}>Los Angeles</p>
+          <p className="cities" onClick={(e) => fetchMostSearched("Cancun", e)}>Cancun</p>
+          <p className="cities" onClick={(e) => fetchMostSearched("London", e)}>London</p>
+          <p className="cities" onClick={(e) => fetchMostSearched("Paris", e)}>Paris</p>
+          <p className="cities" onClick={(e) => fetchMostSearched("Miami", e)}>Miami</p>
         </div>
         <div className="name">
           <p>Developed by Alieu Barrow</p>  
