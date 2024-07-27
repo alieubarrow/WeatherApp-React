@@ -7,6 +7,7 @@ export default function App() {
   //const DATA = "https://api.openweathermap.org/data/2.5/weather?q={city}&APPID=9bd527bc70707a6643cad5b24730fb0d";  
   const [city, setCity] = useState(" ");
   const [weather, setWeather] = useState({});
+  //const [icon, setIcon] = useState({});
   //const [error, setError] = useState(" ");
 
   /*useEffect(() => {
@@ -46,6 +47,12 @@ export default function App() {
     })
     setCity("");
  }
+
+ /*const fetchIcon = (icon, e) => {
+  const URl = "https://openweathermap.org/img/wn/${icon}.png";
+  setIcon(URl);
+ }*/
+
   /*const getWeather = async () => {
     if (city === " ") {
       alert("Please enter a city name");
@@ -93,29 +100,19 @@ return (
       <div className="info">
         <div className="weatherInfo">
           <div className="location">
-            <div className="cityName">
-              <p>{weather.name}</p>
-            </div>
-            <div className="country">
-              {weather.sys ? <p>{weather.sys.country}</p> : null}
-            </div>
+            <p className="cityName">{weather.name}</p>
+            {weather.sys ? <p className="country"> {weather.sys.country}</p> : null}
           </div>
           <div className="degrees">
             {weather.main ? <h1>{weather.main.temp.toFixed()}°F</h1> : null}
           </div>
           <div className="description">
-            {weather.weather ? <p>{weather.weather[0].main}</p> : null}
+            {weather.weather ? <p>{weather.weather[0].description}</p> : null}
           </div>
           <div className="bottomInfo">
-            <div className="feels">
-              {weather.main ? <p>{weather.main.feels_like.toFixed()}°F</p> : null}
-            </div>
-            <div className="humidity">
-              {weather.main ? <p>{weather.main.humidity}%</p> : null}
-            </div>
-            <div className="wind">
-              {weather.wind ? <p>{weather.wind.speed.toFixed()} MPH</p> : null}
-            </div>
+              {weather.main ? <p className="feels">Feels: {weather.main.feels_like.toFixed()}°F</p> : null}
+              {weather.main ? <p className="humidity">Humidity: {weather.main.humidity}%</p> : null}
+              {weather.wind ? <p className="wind">Wind Speed: {weather.wind.speed.toFixed()} MPH</p> : null}
           </div>
         </div>
       </div>
