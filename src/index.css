@@ -1,144 +1,173 @@
- body {
-  background-color: lightblue;
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color:lightblue;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .container {
   display: flex;
-  justify-content: center; 
-  margin-top: 175px;
+  justify-content: center;
+  align-items: stretch;
+  width: min(1120px, calc(100% - 32px));
+  min-height: 570px;
+  margin: clamp(24px, 8vh, 175px) auto 24px;
 }
 
 .info {
   background-image: url("../public/images/background.jpg");
-  border-collapse: collapse;
+  background-position: center;
+  background-size: cover;
   border: 1px solid black;
-  border-radius: 15px 0px 0px 15px;
-  width: 50%;
-  float: left;
-  height: 570px;
+  border-radius: 15px 0 0 15px;
+  flex: 1 1 680px;
+  min-height: 570px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(24px, 5vw, 56px);
 }
 
 .searchBar {
-  border-collapse: collapse;
   border: 1px solid black;
   background-color: black;
-  height: 570px;
-  width: 25%;
-} 
+  flex: 0 1 390px;
+  min-height: 570px;
+  padding: 25px;
+}
+
+.searchBar form {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
 
 .search-box {
   border: 1px solid gray;
-  margin-top: 25px;
-  margin-left: 25px;
   background-color: lightblue;
   height: 35px;
-  width: 300px;
+  min-width: 0;
+  flex: 1;
   border-radius: 10px;
   font-size: large;
+  padding: 0 12px;
 }
 
 .search-button {
   border: 1px solid gray;
-  margin-top: 25px;
-  margin-left: 5px;
   background-color: lightblue;
   height: 35px;
-  width: 70px;
+  flex: 0 0 auto;
   font-size: large;
   color: black;
   border-radius: 10px;
   cursor: pointer;
+  padding: 0 14px;
 }
 
 .mostSearched {
-  color: white; 
+  color: white;
   font-size: large;
-  margin-left: 30px;
   margin-top: 40px;
 }
 
 .topSearches {
+  display: grid;
+  gap: 10px;
   color: white;
-  margin-left: 40px;
 }
 
 .topSearches .cities:hover {
   background-color: lightslategray;
-  transform: scale(1.1);
+  transform: translateX(4px);
   cursor: pointer;
   color: orange;
-  transition-timing-function: ease-out;
-  transition-duration: 500ms;
 }
 
 .cities {
   background-color: lightblue;
+  border: 0;
   color: black;
   font-size: large;
-  padding-left: 10px;
-  padding-top: 3px;
-  padding-bottom: 3px;
-  margin-left: -10px;
-  margin-right: 25px;
+  padding: 7px 10px;
   border-radius: 5px;
   font-weight: 500;
-  transition-duration: 500ms;
+  text-align: left;
+  transition: background-color 300ms ease, color 300ms ease, transform 300ms ease;
+  width: 100%;
 }
 
 .name {
   background-color: slategray;
-  margin-left: 100px;
-  margin-right: 125px;
-  margin-top: 10%;
+  margin-top: clamp(24px, 10%, 48px);
   color: white;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 1px 10px;
   border-radius: 5px;
+  text-align: center;
 }
 
 hr {
   margin-top: -20px;
-  margin-right: 30px;
 }
 
 .weatherInfo {
   color: orange;
+  width: min(100%, 720px);
+  text-shadow: 0 2px 8px black;
 }
 
 .cityName {
-  font-size: 40px;
+  font-size: clamp(32px, 5vw, 40px);
+  margin: 0;
 }
 
 .country {
-  font-size: 40px;
+  font-size: clamp(32px, 5vw, 40px);
+  margin: 0;
 }
 
 .degrees {
   text-align: center;
-  font-size: 40px;
+  font-size: clamp(36px, 6vw, 40px);
 }
 
 .description {
   text-align: center;
-  font-size: 35px;
+  font-size: clamp(24px, 4vw, 35px);
+  text-transform: capitalize;
 }
 
 .location {
   display: flex;
+  flex-wrap: wrap;
   column-gap: 15px;
+  row-gap: 4px;
   justify-content: center;
+  text-align: center;
 }
 
 .bottomInfo {
   display: flex;
+  flex-wrap: wrap;
   column-gap: 15px;
+  row-gap: 8px;
   font-size: 20px;
   border-radius: 15px;
   background-color: lightslategray;
-  margin-left: 170px;
-  margin-right: 125px;
+  margin: 0 auto;
+  padding: 0 18px;
   justify-content: center;
-  width: 500px;
+  max-width: 520px;
+  width: 100%;
 }
 
 .humidity {
@@ -159,3 +188,60 @@ hr {
   font-size: 20px;
 }
 
+@media (max-width: 850px) {
+  .container {
+    flex-direction: column;
+    width: min(100% - 24px, 640px);
+  }
+
+  .info,
+  .searchBar {
+    min-height: auto;
+    width: 100%;
+  }
+
+  .info {
+    border-radius: 15px 15px 0 0;
+  }
+
+  .searchBar {
+    border-radius: 0 0 15px 15px;
+  }
+
+  .topSearches {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .container {
+    width: 100%;
+    margin: 0;
+  }
+
+  .info,
+  .searchBar {
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+  }
+
+  .searchBar form {
+    flex-direction: column;
+  }
+
+  .search-button,
+  .search-box {
+    width: 100%;
+  }
+
+  .topSearches {
+    grid-template-columns: 1fr;
+  }
+
+  .bottomInfo {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 14px;
+  }
+}

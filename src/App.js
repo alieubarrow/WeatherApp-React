@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 
 export default function App() {
@@ -8,7 +8,7 @@ export default function App() {
   const [error, setError] = useState(null);
   const API_KEY = process.env.REACT_APP_WEATHER_API_KEY; // Use env variable
 
-  const fetchWeatherData = async (cityName) => {
+  const fetchWeatherData = useCallback(async (cityName) => {
     setLoading(true);
     setError(null);
     try {
@@ -22,22 +22,21 @@ export default function App() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [API_KEY]);
 
   const fetchWeather = (e) => {
     if (e) e.preventDefault();
     fetchWeatherData(city);
   };
 
-  const fetchMostSearched = (selectedCity, e) => {
-    e.preventDefault();
+  const fetchMostSearched = (selectedCity) => {
     setCity(selectedCity);
     fetchWeatherData(selectedCity);
   };
 
   useEffect(() => {
-    fetchWeatherData(city);
-  }, [city]);
+    fetchWeatherData("New York");
+  }, [fetchWeatherData]);
 
   return (
     <>
@@ -50,34 +49,34 @@ export default function App() {
               <>
                 <div className="location">
                   <p className="cityName">{weather.name}</p>
-                  {weather.sys?.country && <p className="country"> {weather.sys.country}</p>}
+                  {weather.sys?.country && <p className="country">{weather.sys.country}</p>}
                 </div>
                 <div className="degrees">
-                  {weather.main?.temp && <h1>{weather.main.temp.toFixed()}°F</h1>}
+                  {weather.main?.temp != null && <h1>{weather.main.temp.toFixed()}{"\u00b0F"}</h1>}
                 </div>
                 <div className="description">
                   {weather.weather?.[0]?.description && <p>{weather.weather[0].description}</p>}
                 </div>
                 <div className="bottomInfo">
-                  {weather.main?.feels_like && <p className="feels">Feels: {weather.main.feels_like.toFixed()}°F</p>}
-                  {weather.main?.humidity && <p className="humidity">Humidity: {weather.main.humidity}%</p>}
-                  {weather.wind?.speed && <p className="wind">Wind Speed: {weather.wind.speed.toFixed()} MPH</p>}
+                  {weather.main?.feels_like != null && <p className="feels">Feels: {weather.main.feels_like.toFixed()}{"\u00b0F"}</p>}
+                  {weather.main?.humidity != null && <p className="humidity">Humidity: {weather.main.humidity}%</p>}
+                  {weather.wind?.speed != null && <p className="wind">Wind Speed: {weather.wind.speed.toFixed()} MPH</p>}
                 </div>
               </>
             )}
           </div>
         </div>
         <div className="searchBar">
-          <form onSubmit={fetchWeather}>  
-            <input 
-              type="text" 
-              value={city} 
-              onChange={(e) => setCity(e.target.value)} 
-              className="search-box" 
+          <form onSubmit={fetchWeather}>
+            <input
+              type="text"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              className="search-box"
               placeholder="Search here"
               aria-label="Enter city name"
             />
-            <button type="submit" className="search-button" aria-label="Search">Search</button> 
+            <button type="submit" className="search-button" aria-label="Search">Search</button>
           </form>
           <div className="mostSearched">
             <p>Most Searched</p>
@@ -85,11 +84,11 @@ export default function App() {
           </div>
           <div className="topSearches">
             {["San Francisco", "Madrid", "Athens", "Los Angeles", "Cancun", "London", "Paris", "Miami"].map((city) => (
-              <p key={city} className="cities" onClick={(e) => fetchMostSearched(city, e)}>{city}</p>
+              <button key={city} type="button" className="cities" onClick={() => fetchMostSearched(city)}>{city}</button>
             ))}
           </div>
           <div className="name">
-            <p>Developed by Alieu Barrow</p>  
+            <p>Developed by Alieu Barrow</p>
           </div>
         </div>
       </div>
