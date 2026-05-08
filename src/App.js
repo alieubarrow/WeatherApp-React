@@ -13,7 +13,7 @@ export default function App() {
     setError(null);
     try {
       const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${API_KEY}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(cityName)}&units=imperial&appid=${API_KEY}`
       );
       setWeather(response.data);
     } catch (error) {
